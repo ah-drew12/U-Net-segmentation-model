@@ -126,11 +126,13 @@ class F2_score(keras.metrics.Metric):
 
             tp = np.sum(
                 (tensor[:, :, threshold_ind] == 1) > 0)  # If IOU score higher than threshold, we mark this as a 'hit'
-            fp = np.sum((tensor[:, :, threshold_ind] > 0) > 0) - tp  # Counting values that less than threshold
-            fn = tensor.shape[
-                     1] - tp - fp - 1  # get a number of predicted masks and subtract the number of true positive masks and false positive masks. Also we need to subtract 1 mask that belong to background
-            F2_score = (1 + self.B ** 2) * tp / ((1 + self.B ** 2) * tp + (
-                        self.B ** 2) * fn + fp + 0.0000001)  # Evaluation of F2 score, where we adding 0.0000001 in a denominator to except division by 0.
+            for pred_mask in range(tensor.shape[1]):
+                if np.sum((tensor[:,pred_mask,threshold_ind]>0)>0) > 0:
+                    fp+=1
+            fp -= tp
+            # fp = np.sum((tensor[:, :, threshold_ind] > 0) > 0) - tp  # Counting values that less than threshold
+            fn = tensor.shape[1] - tp - fp-1 # get a number of predicted masks and subtract the number of true positive masks and false positive masks.
+            F2_score = (1 + self.B ** 2) * tp / ((1 + self.B ** 2) * tp + (self.B ** 2) * fn + fp + 0.0000001)  # Evaluation of F2 score, where we adding 0.0000001 in a denominator to except division by 0.
             F2_scores.append((F2_score))  # Collect F2 score for threshold
         F2_scores = np.array(F2_scores)
         if threshold_num > 1:
