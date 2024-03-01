@@ -74,4 +74,4 @@ After those calculation, we can evaluate a F2 score.
 
 The custom metric haven't been used in model training because its evaluation increased the time of training significantly (from 10 minutes to hour). So, it has been used after the model was trained.
 
-You can check model prediction at the end of the jupyter notebook. There is a comparison between models trained on full-size images and images with size 256 x 256 pixels.
+*You can check model prediction at the end of the jupyter notebook. There is a comparison between models trained on full-size images and images with size 256 x 256 pixels.
