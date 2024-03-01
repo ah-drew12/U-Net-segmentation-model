@@ -23,6 +23,9 @@ IOU_score = sm.metrics.IOUScore(threshold=0.5)
 
 f2_score = sm.metrics.FScore(threshold=0.5, beta=2)
 F2_score_array_768 = []
+
+thresholds=[0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95] #Thresholds for F2 score. Can be used instead of just 0.5
+
 F2_score_metric = F2_score(threshold=[0.5], batch_processing=False)
 
 unet_model = tf.keras.models.load_model('u_net_segmentation_model.h5',
